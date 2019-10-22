@@ -30,12 +30,15 @@ class WordCloud:
             <div style="text-align: center; vertical-align: middle; font-family: arial; color: white; background-color:black; border:1px solid black">')
 
         # your code goes here!
-        fo.write('<span style="font-size: 10px"> HELLO </span>')
+        for word, counter in zip(the_dict, the_dict.values()):
+
+            font_size = str(counter * 6)
+
+            fo.write('<span style="font-size: ' + font_size + 'px"> ' + word + ' </span>')
 
         fo.write('</div>\
             </body>\
             </html>')
-
 
     # opens the input file gettisburg.txt
     # remember to open in in the correct mode
@@ -48,6 +51,24 @@ class WordCloud:
     def create_dict(self):
         my_dict = {}
         # your code goes here:
+        speech = open('gettisburg.txt', 'r')
+
+        list_speech = list(speech)
+
+        whole_list = []
+
+        for line in list_speech:
+
+            sentence = line.split()
+
+            whole_list = whole_list + sentence
+
+        self.add_to_dict(whole_list, my_dict)
+
+        print(my_dict)
+
+        # Close Speech
+        speech.close()
 
         return my_dict
 
@@ -58,8 +79,14 @@ class WordCloud:
     # if this word already exists. Otherwise sets the
     # word occurance counter to 1
     # returns a dictionary
-    def add_to_dict(self, word, the_dict):
+    def add_to_dict(self, whole_list, the_dict):
         # your code goes here
+
+        for word in whole_list:
+            the_dict.update({word: whole_list.count(word)})
+
+        # Create html
+        self.create_html(the_dict)
 
         return the_dict
 
